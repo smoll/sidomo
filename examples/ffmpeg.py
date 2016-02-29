@@ -1,3 +1,7 @@
+### HACK: FOR LOCAL TESTING ONLY ###
+import sys
+sys.path.append('../sidomo')
+### HACK: FOR LOCAL TESTING ONLY ###
 """A python FFMPEG module built from sdpm."""
 from sidomo import Container
 
