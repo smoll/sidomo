@@ -17,14 +17,19 @@ client = docker.Client(
 class Container:
     """Represents a single docker container on the host."""
 
-    def __init__(self, image, memory_limit_gb=4, stderr=True, stdout=True):
+    def __init__(self, image, memory_limit_gb=4, stderr=True, stdout=True, pull=True):
         self.image = image
         self.memory_limit_bytes = int(memory_limit_gb * 1e9)
         self.stderr = stderr
         self.stdout = stdout
+        self.pull = pull
+        # import pdb; pdb.set_trace()
 
     def __enter__(self):
         """Power on."""
+        if self.pull and self.image not in client.images(quiet=True):
+            client.pull(self.image, stream=True)
+
         self.container_id = client.create_container(
             image=self.image,
             host_config=client.create_host_config(
